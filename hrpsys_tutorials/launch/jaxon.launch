@@ -1,5 +1,9 @@
 <launch>
   <arg name="GUI" default="true" />
+  <arg name="USE_COLLISIONCHECK" default="true" /> <!-- enable collision rtc on simulation -->
+  <arg name="HRPSYS_PY_ARGS" default="--use-collision" if="$(arg USE_COLLISIONCHECK)" />
+  <arg name="HRPSYS_PY_ARGS" default=""            unless="$(arg USE_COLLISIONCHECK)" />
+  
   <include file="$(find hrpsys_tools)/launch/hrpsys.launch" >
     <arg name="MODEL_FILE" value="$(find hrpsys_tutorials)/models/JAXON_JVRC/JAXON_JVRCmain.wrl" />
     <arg name="PROJECT_FILE" value="$(find hrpsys_tutorials)/models/JAXON_JVRC.xml" />
@@ -8,6 +12,6 @@
     <arg name="GUI" default="$(arg GUI)" />
     <arg name="HRPSYS_PY_PKG"  default='hrpsys_tutorials' />
     <arg name="HRPSYS_PY_NAME" default='jaxon_client.py' />
-    <arg name="HRPSYS_PY_ARGS" default='' />
+    <arg name="HRPSYS_PY_ARGS" default='$(arg HRPSYS_PY_ARGS)' />
   </include>
 </launch>

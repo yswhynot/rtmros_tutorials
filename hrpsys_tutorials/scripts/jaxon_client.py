@@ -5,6 +5,7 @@ import sys
 from hrpsys import rtm
 from hrpsys.hrpsys_config import *
 import OpenHRP
+import argparse
 
 #
 class JaxonConfigurator(HrpsysConfigurator):
@@ -27,8 +28,24 @@ class JaxonConfigurator(HrpsysConfigurator):
         @return true if set successfully, false otherwise'''
         self.abc_svc.goStop()
 
+class JAXON(JaxonConfigurator):
+    rtclist = [
+        ['seq', "SequencePlayer"],
+        ['sh', "StateHolder"],
+        ['fk', "ForwardKinematics"],
+        ['ic', "ImpedanceController"],
+        ['el', "SoftErrorLimiter"],
+        # ['co', "CollisionDetector"],
+        ['sc', "ServoController"],
+        ['log', "DataLogger"],
+    ]
+
+    def init(self, robotname="Jaxon", url=""):
+        print(self.configurator_name + "initialize"
+
 if __name__ == '__main__':
-    hcf = JaxonConfigurator()
+    hcf = JAXON()
+    # hcf = JaxonConfigurator()
     hcf.getRTCList = hcf.getRTCListUnstable
 
     # initialize if we have arguments
@@ -37,6 +54,10 @@ if __name__ == '__main__':
         hcf.init(sys.argv[1], sys.argv[2])
     else:
         hcf.findComps()
+
+    # add collision detector
+    if args.use_collision:
+        robot.rtclist.append(['co', "CollisionDetector"])
 
     # if auto balancer is not started yet
     if hcf.abc_svc.getAutoBalancerParam()[1].controller_mode != OpenHRP.AutoBalancerService.MODE_ABC:
