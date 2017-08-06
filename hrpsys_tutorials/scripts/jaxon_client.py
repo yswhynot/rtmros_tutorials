@@ -41,9 +41,16 @@ class JAXON(JaxonConfigurator):
     ]
 
     def init(self, robotname="Jaxon", url=""):
-        print(self.configurator_name + "initialize"
+        print(self.configurator_name + "initialize")
+
+    def getRTCList(self):
+        rtcslist = self.rtclist
+        return rtclist
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='hiro command line interpreters')
+    parser.add_argument('--use-collision', help='install collision detector', action='store_true', default=False)
+    
     hcf = JAXON()
     # hcf = JaxonConfigurator()
     hcf.getRTCList = hcf.getRTCListUnstable
@@ -57,7 +64,7 @@ if __name__ == '__main__':
 
     # add collision detector
     if args.use_collision:
-        robot.rtclist.append(['co', "CollisionDetector"])
+        hcf.rtclist.append(['co', "CollisionDetector"])
 
     # if auto balancer is not started yet
     if hcf.abc_svc.getAutoBalancerParam()[1].controller_mode != OpenHRP.AutoBalancerService.MODE_ABC:
