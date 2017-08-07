@@ -1,3 +1,0 @@
-<launch>
-  <test test-name="test_robot_model" pkg="hrpsys_ros_bridge_tutorials" type="test-robot-model.l" />
-</launch>
