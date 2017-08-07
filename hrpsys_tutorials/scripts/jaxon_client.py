@@ -44,26 +44,35 @@ class JAXON(JaxonConfigurator):
         print(self.configurator_name + "initialize")
 
     def getRTCList(self):
-        rtcslist = self.rtclist
+        rtclist = self.rtclist
         return rtclist
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='hiro command line interpreters')
+    parser = argparse.ArgumentParser(description='jaxon command line interpreters')
     parser.add_argument('--use-collision', help='install collision detector', action='store_true', default=False)
-    
+    args, unknown = parser.parse_known_args()
+    unknown = [u for u in unknown if u[:2] != '__'] # filter out ros arguments
+    print("args: ")
+    print(args)
+    print("unknown: ")
+    print(unknown)
+
     hcf = JAXON()
     # hcf = JaxonConfigurator()
     hcf.getRTCList = hcf.getRTCListUnstable
 
     # initialize if we have arguments
-    if len(sys.argv) > 2:
-        hcf.waitForRTCManagerAndRoboHardware(robotname=sys.argv[1])
-        hcf.init(sys.argv[1], sys.argv[2])
+    if len(unknown) >= 2:
+        args.robot = unknown[0]
+        args.modelfile = unknown[1]
+        # hcf.waitForRTCManagerAndRoboHardware(robotname=args.robot)
+        hcf.init(args.robot, args.modelfile)
     else:
         hcf.findComps()
 
     # add collision detector
     if args.use_collision:
+        print("do use collision")
         hcf.rtclist.append(['co', "CollisionDetector"])
 
     # if auto balancer is not started yet

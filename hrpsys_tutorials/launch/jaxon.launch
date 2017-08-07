@@ -1,6 +1,6 @@
 <launch>
   <arg name="GUI" default="true" />
-  <arg name="USE_COLLISIONCHECK" default="true" /> <!-- enable collision rtc on simulation -->
+  <arg name="USE_COLLISIONCHECK" default="false" /> <!-- enable collision rtc on simulation -->
   <arg name="HRPSYS_PY_ARGS" default="--use-collision" if="$(arg USE_COLLISIONCHECK)" />
   <arg name="HRPSYS_PY_ARGS" default=""            unless="$(arg USE_COLLISIONCHECK)" />
   
